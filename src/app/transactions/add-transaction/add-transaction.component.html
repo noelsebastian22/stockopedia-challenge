@@ -1,7 +1,7 @@
 <div class="container">
   <div class="card mt-4">
     <div class="card-body">
-      <h3>Add transaction</h3>
+      <h3>{{ data.title }}</h3>
       <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="date">Date</label>
@@ -63,7 +63,9 @@
             />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Add transaction</button>
+        <button type="submit" class="btn btn-primary">
+          {{ data.action === "add" ? "Add" : "Update" }} transaction
+        </button>
         <!-- <button class="btn btn-secondary" mat-dialog-close>Cancel</button> -->
       </form>
     </div>

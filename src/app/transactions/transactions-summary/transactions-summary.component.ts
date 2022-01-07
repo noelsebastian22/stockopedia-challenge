@@ -33,7 +33,7 @@ export class TransactionsSummaryComponent implements OnInit {
     console.log(transaction);
     const dialogConfig: MatDialogConfig = {
       data: {
-        title: 'Edit transaction ',
+        title: `Edit transaction ${transaction.id}`,
         action: 'edit',
         values: transaction,
       },

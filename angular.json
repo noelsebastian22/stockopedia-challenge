@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "stockopedia-challenge"
+    }
+  },
+  "defaultProject": "stockopedia-challenge",
+  "cli": {
+    "analytics": false
+  }
 }

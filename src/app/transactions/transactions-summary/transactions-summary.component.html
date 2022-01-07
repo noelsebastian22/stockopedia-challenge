@@ -48,10 +48,18 @@
             >
               {{ transaction.cashflow }}
             </td>
-            <td class="text-right" (click)="$event.preventDefault(); editRow()">
+            <td
+              class="text-right"
+              (click)="$event.preventDefault(); editRow(transaction)"
+            >
               <a href="#">Edit</a>
             </td>
-            <td class="text-right"><a href="#">Delete</a></td>
+            <td
+              class="text-right"
+              (click)="$event.preventDefault(); onDelete(transaction)"
+            >
+              <a href="#">Delete</a>
+            </td>
           </tr>
           <!-- <tr>
             <th scope="row">2</th>

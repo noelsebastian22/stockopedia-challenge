@@ -29,10 +29,13 @@ export class TransactionsSummaryComponent implements OnInit {
       });
   }
 
-  editRow() {
+  editRow(transaction: Transaction) {
+    console.log(transaction);
     const dialogConfig: MatDialogConfig = {
       data: {
-        title: 'Add the transactions',
+        title: 'Edit transaction ',
+        action: 'edit',
+        values: transaction,
       },
     };
 
@@ -46,15 +49,28 @@ export class TransactionsSummaryComponent implements OnInit {
   addStock() {
     const dialogConfig: MatDialogConfig = {
       data: {
-        title: 'Add the transactions',
+        title: 'Add transactions',
+        action: 'add',
       },
     };
 
     const dialogRef = this.dialog.open(AddTransactionComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(({ success }) => {
-    //   if (success) {
-    //     console.log(success)
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(({ success }) => {
+      if (success) {
+        console.log(success);
+      }
+    });
+  }
+
+  /**
+   * Function to delete the transaction
+   * @param transaction
+   */
+  onDelete(transaction: Transaction): void {
+    this.transactionsService
+      .deleteTransaction(transaction.id)
+      .subscribe((item) => {
+        alert('deleted');
+      });
   }
 }

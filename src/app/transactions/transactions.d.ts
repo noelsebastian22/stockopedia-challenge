@@ -7,8 +7,8 @@ export enum TransactionTypes {
 
 export interface Transaction {
   cashflow: number;
-  date: Date;
-  id: number;
+  date: string;
+  id?: number;
   security?: string;
   shares?: number;
   type: 'deposit';

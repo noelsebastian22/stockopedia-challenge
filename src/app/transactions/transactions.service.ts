@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Transaction, TransactionDto } from './transactions';
+import { Transaction, TransactionDto } from './transactions.model';
 
 @Injectable({
   providedIn: 'root',

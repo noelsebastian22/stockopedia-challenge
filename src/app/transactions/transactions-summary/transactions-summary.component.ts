@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Transaction, TransactionDto } from '../transactions';
+import { Transaction, TransactionDto } from '../transactions.model';
 import { TransactionsService } from './../transactions.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
@@ -18,6 +18,10 @@ export class TransactionsSummaryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getAllTransactions();
+  }
+
+  getAllTransactions() {
     this.transactionsService
       .getAllTransaction()
       .subscribe((item: TransactionDto) => {
@@ -40,11 +44,11 @@ export class TransactionsSummaryComponent implements OnInit {
     };
 
     const dialogRef = this.dialog.open(AddTransactionComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(({ success }) => {
-    //   if (success) {
-    //     console.log(success)
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(({ success }) => {
+      if (success) {
+        console.log(success);
+      }
+    });
   }
   addStock() {
     const dialogConfig: MatDialogConfig = {

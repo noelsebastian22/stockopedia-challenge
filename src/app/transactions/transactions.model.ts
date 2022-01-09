@@ -11,7 +11,7 @@ export interface Transaction {
   id?: number;
   security?: string;
   shares?: number;
-  type: 'deposit';
+  type: TransactionTypes;
   value: number;
 }
 

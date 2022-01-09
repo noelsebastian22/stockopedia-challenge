@@ -2,7 +2,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -21,14 +25,6 @@ describe('TransactionsSummaryComponent', () => {
   let fixture: ComponentFixture<TransactionsSummaryComponent>;
   let transactionsService: TransactionsService;
 
-  //For Modal
-  // let dialogSpy: jasmine.Spy;
-  // let dialogRefSpyObj = jasmine.createSpyObj({
-  //   afterClosed: of({}),
-  //   close: null,
-  // });
-  // dialogRefSpyObj.componentInstance = AddTransactionComponent;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -38,7 +34,11 @@ describe('TransactionsSummaryComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [TransactionsSummaryComponent],
-      providers: [TransactionsService, HttpClientModule],
+      providers: [
+        TransactionsService,
+        HttpClientModule,
+        { provide: MatDialog, useValue: { open: () => of({ id: 1 }) } },
+      ],
     }).compileComponents();
   });
 
@@ -62,21 +62,11 @@ describe('TransactionsSummaryComponent', () => {
     expect(component.transactions).toEqual(MOCK_TRANSACTIONS_DATA.transactions);
   });
 
-  it('should call the delete function', () => {
-    const transactionId: number = 12;
-    spyOn(transactionsService, 'deleteTransaction').and.callFake(() =>
-      of(null)
-    );
-    component.onDelete(transactionId);
-  });
-
-  // it('should call the edit row function', () => {
-  //   component.editRow(MOCK_EDIT_TRANSACTION_PAYLOAD);
-  //   expect(dialogSpy).toHaveBeenCalled();
-  //   fixture.detectChanges();
-  //   const dialogTitle = document.getElementById('action-title');
-  //   expect(dialogTitle.innerText).toEqual(
-  //     `Edit transaction ${MOCK_EDIT_TRANSACTION_PAYLOAD.id}`
+  // it('should call the delete function', () => {
+  //   const transactionId: number = 12;
+  //   spyOn(transactionsService, 'deleteTransaction').and.callFake(() =>
+  //     of(null)
   //   );
+  //   component.onDelete(transactionId);
   // });
 });

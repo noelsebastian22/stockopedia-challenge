@@ -1,7 +1,7 @@
 <div class="container">
   <div class="card mt-4">
     <div class="card-body">
-      <h3>{{ data.title }}</h3>
+      <h3 id="action-title">{{ data.title }}</h3>
       <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="date">Date</label>

@@ -27,7 +27,7 @@
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <th scope="row">{{ transaction.id }}</th>
-            <td>12/06/2019</td>
+            <td>{{ transaction.date | customDate }}</td>
             <td>{{ transaction.type }}</td>
             <td>
               <span class="text-muted">{{
@@ -35,18 +35,20 @@
               }}</span>
             </td>
             <td class="text-right">
-              <span class="text-muted">{{
+              <span [ngClass]="!transaction.shares && 'text-muted'">{{
                 transaction.shares ? transaction.shares : "n/a"
               }}</span>
             </td>
-            <td class="text-right">&pound;{{ transaction.value }}</td>
+            <td class="text-right">
+              {{ transaction.value | currency: "GBP" }}
+            </td>
             <td
               class="text-right"
               [ngClass]="
                 transaction.cashflow > 0 ? 'text-success' : 'text-danger'
               "
             >
-              {{ transaction.cashflow }}
+              {{ transaction.cashflow | currency: "GBP" }}
             </td>
             <td
               class="text-right"
@@ -56,7 +58,7 @@
             </td>
             <td
               class="text-right"
-              (click)="$event.preventDefault(); onDelete(transaction)"
+              (click)="$event.preventDefault(); onDelete(transaction.id)"
             >
               <a href="#">Delete</a>
             </td>
@@ -98,7 +100,9 @@
         <tfoot>
           <tr>
             <td colspan="6">Cumulative cashflow</td>
-            <td class="text-right">&pound;{{ cumulativeCashflow | number }}</td>
+            <td class="text-right">
+              {{ cumulativeCashflow | currency: "GBP" }}
+            </td>
             <td colspan="2">&nbsp;</td>
           </tr>
         </tfoot>

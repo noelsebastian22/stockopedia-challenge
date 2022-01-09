@@ -34,7 +34,6 @@ export class TransactionsSummaryComponent implements OnInit {
   }
 
   editRow(transaction: Transaction) {
-    console.log(transaction);
     const dialogConfig: MatDialogConfig = {
       data: {
         title: `Edit transaction ${transaction.id}`,
@@ -70,9 +69,9 @@ export class TransactionsSummaryComponent implements OnInit {
    * Function to delete the transaction
    * @param transaction
    */
-  onDelete(transaction: Transaction): void {
+  onDelete(transactionId: number): void {
     this.transactionsService
-      .deleteTransaction(transaction.id)
+      .deleteTransaction(transactionId)
       .subscribe((item) => {
         alert('deleted');
       });

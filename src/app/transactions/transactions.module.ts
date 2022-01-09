@@ -6,6 +6,7 @@ import { TransactionRoutes } from './transaction.routing';
 import { AddTransactionComponent } from './add-transaction/add-transaction.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [TransactionsSummaryComponent, AddTransactionComponent],
@@ -15,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
+    CoreModule,
   ],
 })
 export class TransactionsModule {}

@@ -1,4 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TransactionsService } from '../transactions.service';
@@ -8,12 +13,12 @@ import { Transaction } from '../transactions.model';
   selector: 'app-add-transaction',
   templateUrl: './add-transaction.component.html',
   styleUrls: ['./add-transaction.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddTransactionComponent implements OnInit {
   transactionForm: FormGroup;
   constructor(
     private dialogRef: MatDialogRef<AddTransactionComponent>,
-
     @Inject(MAT_DIALOG_DATA)
     public data: {
       title: string;
@@ -25,11 +30,11 @@ export class AddTransactionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    this.createForm(this.data.action);
   }
 
-  createForm() {
-    switch (this.data.action) {
+  createForm(action: string) {
+    switch (action) {
       case 'add': {
         this.transactionForm = this.formBuilder.group({
           date: ['', Validators.required],
@@ -43,8 +48,8 @@ export class AddTransactionComponent implements OnInit {
       }
       case 'edit': {
         const transVal = this.data.values;
-        // const date = this.getDate(transVal.date);
-        const date = '2019-01-01';
+        const date = this.getDate(transVal.date);
+        // const date = '2019-01-01';
         this.transactionForm = this.formBuilder.group({
           date: [date, Validators.required],
           type: [transVal.type, Validators.required],
@@ -58,7 +63,7 @@ export class AddTransactionComponent implements OnInit {
     }
   }
 
-  private getDate(isoDate: string): string {
+  getDate(isoDate: string): string {
     const date = new Date(isoDate);
     const year = date.getFullYear();
     const month = `0${date.getMonth() + 1}`.slice(-2);

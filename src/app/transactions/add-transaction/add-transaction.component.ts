@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TransactionsService } from '../transactions.service';
-import { Transaction } from '../transactions';
+import { Transaction } from '../transactions.model';
 
 @Component({
   selector: 'app-add-transaction',

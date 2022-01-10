@@ -3,6 +3,7 @@ import { Transaction, TransactionDto } from '../transactions.model';
 import { TransactionsService } from './../transactions.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
+import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-transactions-summary',
@@ -12,6 +13,11 @@ import { AddTransactionComponent } from '../add-transaction/add-transaction.comp
 export class TransactionsSummaryComponent implements OnInit {
   transactions: Transaction[];
   cumulativeCashflow: number;
+
+  deleteAlert: boolean;
+  modifyAlert: boolean;
+  addAlert: boolean;
+
   constructor(
     private transactionsService: TransactionsService,
     private dialog: MatDialog
@@ -34,7 +40,6 @@ export class TransactionsSummaryComponent implements OnInit {
   }
 
   editRow(transaction: Transaction) {
-    console.log(transaction);
     const dialogConfig: MatDialogConfig = {
       data: {
         title: `Edit transaction ${transaction.id}`,
@@ -46,7 +51,7 @@ export class TransactionsSummaryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddTransactionComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(({ success }) => {
       if (success) {
-        console.log(success);
+        this.modifyAlert = true;
       }
     });
   }
@@ -61,7 +66,7 @@ export class TransactionsSummaryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddTransactionComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(({ success }) => {
       if (success) {
-        console.log(success);
+        this.addAlert = true;
       }
     });
   }
@@ -70,11 +75,31 @@ export class TransactionsSummaryComponent implements OnInit {
    * Function to delete the transaction
    * @param transaction
    */
-  onDelete(transaction: Transaction): void {
-    this.transactionsService
-      .deleteTransaction(transaction.id)
-      .subscribe((item) => {
-        alert('deleted');
-      });
+  onDelete(transactionId: number): void {
+    const dialogConfig: MatDialogConfig = {
+      height: '150px',
+      data: {
+        transactionId,
+      },
+    };
+    const dialogRef = this.dialog.open(DeleteModalComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(({ success }) => {
+      if (success) {
+        this.deleteAlert = true;
+      }
+    });
+  }
+
+  hideAlert(action: string) {
+    switch (action) {
+      case 'add':
+        this.addAlert = false;
+        break;
+      case 'modify':
+        this.modifyAlert = false;
+        break;
+      case 'delete':
+        this.deleteAlert = false;
+    }
   }
 }

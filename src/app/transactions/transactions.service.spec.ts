@@ -11,6 +11,11 @@ import {
   TransactionDto,
   TransactionTypes,
 } from './transactions.model';
+import {
+  MOCK_SAVE_TRANSACTION_DATA,
+  MOCK_SAVE_TRANSACTION_PAYLOAD,
+  MOCK_TRANSACTIONS_DATA,
+} from 'src/mocks/mockTransactions';
 
 describe('TransactionsService', () => {
   let transactionService: TransactionsService;
@@ -35,60 +40,22 @@ describe('TransactionsService', () => {
   });
 
   it('get transactions Api', () => {
-    const mockTransactionsData: TransactionDto = {
-      transactions: [
-        {
-          cashflow: 32000,
-          date: '2019-01-01T09:45:00.000Z',
-          id: 5,
-          type: TransactionTypes.deposit,
-          value: 32000,
-        },
-        {
-          cashflow: -5005,
-          date: '2019-01-02T09:34:02.000Z',
-          id: 17,
-          security: "Carr's",
-          shares: 317,
-          type: TransactionTypes.buy,
-          value: 5005,
-        },
-      ],
-    };
     transactionService
       .getAllTransaction()
-      .subscribe((data) => expect(data).toEqual(mockTransactionsData));
+      .subscribe((data) => expect(data).toEqual(MOCK_TRANSACTIONS_DATA));
 
     const req = httpController.expectOne('/transactions');
     expect(req.request.method).toEqual('GET');
-    req.flush(mockTransactionsData);
+    req.flush(MOCK_TRANSACTIONS_DATA);
   });
   it('call save transactions Api', () => {
-    const mockTransactionsData: Transaction = {
-      cashflow: 345345,
-      date: '2021-12-30T00:00:00.000Z',
-      id: 1065,
-      security: 'fhgt',
-      shares: 435345,
-      type: TransactionTypes.deposit,
-      value: 34535,
-    };
-
-    const payLoad: Transaction = {
-      cashflow: 345345,
-      date: '2021-12-30T00:00:00.000Z',
-      type: TransactionTypes.deposit,
-      value: 34535,
-      shares: 435345,
-      security: 'fhgt',
-    };
     transactionService
-      .addTransaction(payLoad)
-      .subscribe((data) => expect(data).toEqual(mockTransactionsData));
+      .addTransaction(MOCK_SAVE_TRANSACTION_PAYLOAD)
+      .subscribe((data) => expect(data).toEqual(MOCK_SAVE_TRANSACTION_DATA));
 
     const req = httpController.expectOne('/transactions');
     expect(req.request.method).toEqual('POST');
-    req.flush(mockTransactionsData);
+    req.flush(MOCK_SAVE_TRANSACTION_DATA);
   });
 
   it('call delete transactions Api', () => {

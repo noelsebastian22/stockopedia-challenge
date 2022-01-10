@@ -1,9 +1,57 @@
 <div class="container">
   <div class="card mt-4">
     <div class="card-body">
-      <!-- <div class="alert alert-success" role="alert">Transaction added!</div>
-      <div class="alert alert-primary" role="alert">Transaction updated!</div>
-      <div class="alert alert-danger" role="alert">Transaction deleted!</div> -->
+      <div
+        class="alert alert-success"
+        *ngIf="addAlert"
+        collapse="false"
+        role="alert"
+      >
+        Transaction added!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('add')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div
+        class="alert alert-primary"
+        *ngIf="modifyAlert"
+        collapse="true"
+        role="alert"
+      >
+        Transaction updated!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('modify')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div
+        class="alert alert-danger"
+        *ngIf="deleteAlert"
+        collapse="false"
+        role="alert"
+      >
+        Transaction deleted!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('delete')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <div class="action-buttons">
         <button class="btn btn-primary mb-4" (click)="addStock()">
           Add an Entry
@@ -27,7 +75,7 @@
         <tbody>
           <tr *ngFor="let transaction of transactions">
             <th scope="row">{{ transaction.id }}</th>
-            <td>12/06/2019</td>
+            <td>{{ transaction.date | customDate }}</td>
             <td>{{ transaction.type }}</td>
             <td>
               <span class="text-muted">{{
@@ -35,18 +83,20 @@
               }}</span>
             </td>
             <td class="text-right">
-              <span class="text-muted">{{
+              <span [ngClass]="!transaction.shares && 'text-muted'">{{
                 transaction.shares ? transaction.shares : "n/a"
               }}</span>
             </td>
-            <td class="text-right">&pound;{{ transaction.value }}</td>
+            <td class="text-right">
+              {{ transaction.value | currency: "GBP" }}
+            </td>
             <td
               class="text-right"
               [ngClass]="
                 transaction.cashflow > 0 ? 'text-success' : 'text-danger'
               "
             >
-              {{ transaction.cashflow }}
+              {{ transaction.cashflow | currency: "GBP" }}
             </td>
             <td
               class="text-right"
@@ -56,49 +106,18 @@
             </td>
             <td
               class="text-right"
-              (click)="$event.preventDefault(); onDelete(transaction)"
+              (click)="$event.preventDefault(); onDelete(transaction.id)"
             >
               <a href="#">Delete</a>
             </td>
           </tr>
-          <!-- <tr>
-            <th scope="row">2</th>
-            <td>15/06/2019</td>
-            <td>Buy</td>
-            <td>Gulf Keystone Petroleum</td>
-            <td class="text-right">118</td>
-            <td class="text-right">&pound;1,200</td>
-            <td class="text-right text-danger">-&pound;1,200</td>
-            <td class="text-right"><a href="#">Edit</a></td>
-            <td class="text-right"><a href="#">Delete</a></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>01/11/2019</td>
-            <td>Sell</td>
-            <td>Gulf Keystone Petroleum</td>
-            <td class="text-right">34</td>
-            <td class="text-right">&pound;720</td>
-            <td class="text-right text-success">+&pound;720</td>
-            <td class="text-right"><a href="#">Edit</a></td>
-            <td class="text-right"><a href="#">Delete</a></td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>05/01/2020</td>
-            <td>Withdraw</td>
-            <td><span class="text-muted">n/a</span></td>
-            <td class="text-right"><span class="text-muted">n/a</span></td>
-            <td class="text-right">&pound;1,000</td>
-            <td class="text-right text-danger">-&pound;1,000</td>
-            <td class="text-right"><a href="#">Edit</a></td>
-            <td class="text-right"><a href="#">Delete</a></td>
-          </tr> -->
         </tbody>
         <tfoot>
           <tr>
             <td colspan="6">Cumulative cashflow</td>
-            <td class="text-right">&pound;{{ cumulativeCashflow | number }}</td>
+            <td class="text-right">
+              {{ cumulativeCashflow | currency: "GBP" }}
+            </td>
             <td colspan="2">&nbsp;</td>
           </tr>
         </tfoot>

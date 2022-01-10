@@ -1,0 +1,127 @@
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-body">
+      <div
+        class="alert alert-success"
+        *ngIf="addAlert"
+        collapse="false"
+        role="alert"
+      >
+        Transaction added!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('add')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div
+        class="alert alert-primary"
+        *ngIf="modifyAlert"
+        collapse="true"
+        role="alert"
+      >
+        Transaction updated!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('modify')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div
+        class="alert alert-danger"
+        *ngIf="deleteAlert"
+        collapse="false"
+        role="alert"
+      >
+        Transaction deleted!
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="hideAlert('delete')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-primary mb-4" (click)="addStock()">
+          Add an Entry
+        </button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date</th>
+            <th scope="col">Type</th>
+            <th scope="col">Security</th>
+            <th scope="col" class="text-right">Shares</th>
+            <th scope="col" class="text-right">Value</th>
+            <th scope="col" class="text-right">Cashflow</th>
+            <th scope="col" class="text-right">&nbsp;</th>
+            <th scope="col" class="text-right">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions">
+            <th scope="row">{{ transaction.id }}</th>
+            <td>{{ transaction.date | customDate }}</td>
+            <td>{{ transaction.type }}</td>
+            <td>
+              <span class="text-muted">{{
+                transaction.security ? transaction.security : "n/a"
+              }}</span>
+            </td>
+            <td class="text-right">
+              <span [ngClass]="!transaction.shares && 'text-muted'">{{
+                transaction.shares ? transaction.shares : "n/a"
+              }}</span>
+            </td>
+            <td class="text-right">
+              {{ transaction.value | currency: "GBP" }}
+            </td>
+            <td
+              class="text-right"
+              [ngClass]="
+                transaction.cashflow > 0 ? 'text-success' : 'text-danger'
+              "
+            >
+              {{ transaction.cashflow | currency: "GBP" }}
+            </td>
+            <td
+              class="text-right"
+              (click)="$event.preventDefault(); editRow(transaction)"
+            >
+              <a href="#">Edit</a>
+            </td>
+            <td
+              class="text-right"
+              (click)="$event.preventDefault(); onDelete(transaction.id)"
+            >
+              <a href="#">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6">Cumulative cashflow</td>
+            <td class="text-right">
+              {{ cumulativeCashflow | currency: "GBP" }}
+            </td>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
